@@ -34,7 +34,7 @@ export function RegisterForm() {
     defaultValues: {
       email: "",
       password: "",
-      username: "",
+      name: "",
     },
   });
 
@@ -103,15 +103,15 @@ export function RegisterForm() {
             />
             <FormField
               control={form.control}
-              name="username"
+              name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       disabled={isPending}
-                      placeholder="Username"
+                      placeholder="Name"
                     />
                   </FormControl>
                   <FormMessage />
