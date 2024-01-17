@@ -44,8 +44,14 @@ export function LoginForm() {
     startTransition(() => {
       login(values)
         .then((data) => {
-          setSuccess(data.success);
+          if (!data){
+            setError("Something went wrong. Please try again.");
+            return;
+          }
           setError(data.error);
+          if (!data.error) {
+            setSuccess("You have successfully logged in!");
+          }
         });
     });
   };
