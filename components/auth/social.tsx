@@ -4,6 +4,7 @@ import { BiLogoDiscord } from "react-icons/bi";
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { providerLogin } from "@/actions/login";
 
 export function Social() {
   return (
@@ -23,7 +24,7 @@ export function Social() {
           variant="ghost"
           size="icon"
           className="flex items-center justify-center w-14 h-14"
-          onClick={() => {}}
+          onClick={() => providerLogin("google")}
         >
           <FcGoogle size={52} />
         </Button>
@@ -31,7 +32,7 @@ export function Social() {
           variant="ghost"
           size="icon"
           className="flex items-center justify-center w-14 h-14"
-          onClick={() => {}}
+          onClick={() => providerLogin("discord")}
         >
           <BiLogoDiscord size={52} color="rgb(88, 101, 242)" />
         </Button>

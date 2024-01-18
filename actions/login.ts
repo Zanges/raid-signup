@@ -36,5 +36,8 @@ export async function login(values: z.infer<typeof LoginSchema>) {
 
     throw error;
   }
-  
+}
+
+export async function providerLogin(provider: "google" | "discord") {
+  await signIn(provider, { redirectTo: DEFAULT_LOGIN_REDIRECT });
 }
