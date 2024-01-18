@@ -5,6 +5,7 @@ export const puplicRoutes = [
 export const authRoutes = [
   "/auth/login",
   "/auth/register",
+  "/auth/error",
 ];
 
 export const apiAuthPrefix = "/api/auth";
