@@ -11,6 +11,22 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
+enum UserRole {
+  ADMIN
+  USER
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name      String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          UserRole  @default(USER)
+  accounts      Account[]
+}
+
 model Account {
   id                 String  @id @default(cuid())
   userId             String
@@ -28,13 +44,4 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
-}
-
-model User {
-  id            String    @id @default(cuid())
-  name      String?
-  email         String?   @unique
-  emailVerified DateTime?
-  password      String?
-  accounts      Account[]
 }
