@@ -1,5 +1,6 @@
 export const puplicRoutes = [
   "/",
+  "/auth/verify",
 ];
 
 export const authRoutes = [
