@@ -30,7 +30,10 @@ export async function login(values: z.infer<typeof LoginSchema>) {
   if (!existingUser.emailVerified) {
     const verificationToken = await generateVerificationToken(email); // TODO: only regenerate if user requests new token
 
-    sendVerificationEmail(verificationToken.email, verificationToken.token);
+    await sendVerificationEmail(
+      verificationToken.email, 
+      verificationToken.token
+    );
     
     return {
       success: "Please verify your email!",
