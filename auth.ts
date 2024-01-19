@@ -16,6 +16,7 @@ export const {
     signIn: "/auth/login",
     error: "/auth/error",
   },
+
   events: {
     async linkAccount({ user }) {
       await db.user.update({
@@ -23,10 +24,20 @@ export const {
         data: {
           emailVerified: new Date(),
         },
-      })
-    }
+      });
+    },
   },
+
   callbacks: {
+    async signIn({ user, account }) {
+      if (account?.provider !== "credentials") return true;
+
+      const existingUser = await getUserById(user.id);
+      if (!existingUser?.emailVerified) return false;
+
+      return true;
+    },
+
     async session({ session, token }) {
       if (session.user && token.sub) {
         session.user.id = token.sub;
@@ -50,6 +61,7 @@ export const {
       return token
     },
   },
+  
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
   ...authConfig,

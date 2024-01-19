@@ -48,15 +48,13 @@ export function LoginForm() {
     startTransition(() => {
       login(values)
         .then((data) => {
-          if (!data){ // if data is undefined asume login was successful TODO: check if this is correct
-            setSuccess("You have successfully logged in!");
-            return;
-          }
+          // if (!data){ // if data is undefined asume login was successful TODO: check if this is correct
+          //   setSuccess("You have successfully logged in!");
+          //   return;
+          // }
           
-          setError(data.error);
-          if (!data.error) { // TODO: check if this is correct
-            setSuccess("You have successfully logged in!");
-          }
+          setError(data?.error);
+          setSuccess(data?.success);
         });
     });
   };
