@@ -19,14 +19,14 @@ export function Header({
   return (
     <div className="w-full flex flex-col items-center gap-y-4">
       <h1 className={cn(
-        "text-5xl font-extrabold", 
+        "text-5xl font-extrabold text-center", 
         font.className
       )}>
         {mainLabel}
       </h1>
       {subLabel && (
         <p className={cn(
-          "text-lg text-muted-foreground",
+          "text-lg text-muted-foreground text-center",
           font.className
         )}>
           {subLabel}

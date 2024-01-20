@@ -24,6 +24,7 @@ import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { login } from "@/actions/login";
+import Link from "next/link";
 
 export function LoginForm() {
   const searchParams = useSearchParams();
@@ -48,11 +49,6 @@ export function LoginForm() {
     startTransition(() => {
       login(values)
         .then((data) => {
-          // if (!data){ // if data is undefined asume login was successful TODO: check if this is correct
-          //   setSuccess("You have successfully logged in!");
-          //   return;
-          // }
-          
           setError(data?.error);
           setSuccess(data?.success);
         });
@@ -105,6 +101,18 @@ export function LoginForm() {
                       type="password"
                     />
                   </FormControl>
+                  <Button
+                    size="sm"
+                    variant="link"
+                    asChild
+                    className="px-0 font-normal"
+                  >
+                    <Link
+                      href="/auth/forgot-password"
+                    >
+                      Forgot password?
+                    </Link>
+                  </Button>
                   <FormMessage />
                 </FormItem>
               )}
@@ -122,5 +130,5 @@ export function LoginForm() {
         </form>
       </Form>
     </CardWrapper>
-  )
+  );
 }

@@ -6,6 +6,8 @@ export const puplicRoutes = [
 export const authRoutes = [
   "/auth/login",
   "/auth/register",
+  "/auth/forgot-password",
+  "/auth/new-password",
   "/auth/error",
 ];
 
