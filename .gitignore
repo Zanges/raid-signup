@@ -39,3 +39,6 @@ next-env.d.ts
 # IDE
 /.idea
 *.code-workspace
+
+# temporary
+app/legal/data/de/page.tsx
