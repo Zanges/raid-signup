@@ -1,8 +1,9 @@
 import NextAuth from "next-auth"
 
 import authConfig from "@/auth.config"
-import { 
-  puplicRoutes,
+import {
+  noCookieRoutes,
+  publicRoutes,
   authRoutes,
   apiAuthPrefix,
   DEFAULT_LOGIN_REDIRECT,
@@ -10,13 +11,27 @@ import {
 
 const { auth } = NextAuth(authConfig)
 
+function redirectToNoCookieError(request: any) {
+  return Response.redirect(new URL("/error/no-cookies", request.nextUrl))
+}
+
 export default auth((request) => {
   const { nextUrl } = request;
   const isLoggedIn = !!request.auth;
 
   // console.log("middleware", request);
-  // console.log("pathname", nextUrl.pathname);
-  // console.log("isLoggedIn", isLoggedIn);
+
+  const isNoCookieRoute = noCookieRoutes.includes(nextUrl.pathname);
+  if (!isNoCookieRoute) {
+    if (!request.cookies) {
+      return redirectToNoCookieError(request);
+    }
+    
+    const consentCookie = request.cookies.get("CookieConsent");
+    if (!consentCookie || consentCookie.value !== "true") {
+      return redirectToNoCookieError(request);
+    }
+  }
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
 
@@ -33,7 +48,7 @@ export default auth((request) => {
     return null;
   }
 
-  const isPublicRoute = puplicRoutes.includes(nextUrl.pathname);
+  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
 
   if (!isPublicRoute && !isLoggedIn) {
     return Response.redirect(new URL("/auth/login", nextUrl));

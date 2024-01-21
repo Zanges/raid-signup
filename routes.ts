@@ -1,6 +1,13 @@
-export const puplicRoutes = [
+export const noCookieRoutes = [
+  "/",
+  "/error/no-cookies",
+];
+
+export const publicRoutes = [
   "/",
   "/auth/verify",
+  "/error/no-cookies",
+  "/legal/data/de",
 ];
 
 export const authRoutes = [
