@@ -16,15 +16,28 @@ enum UserRole {
   USER
 }
 
+enum Faction {
+  ALLIANCE
+  HORDE
+}
+
+enum GuildManagementProvider {
+  MANUAL
+  DISCORD
+}
+
 model User {
   id            String    @id @default(cuid())
-  name      String?
+  name          String?
   email         String?   @unique
   emailVerified DateTime?
   image         String?
   password      String?
   role          UserRole  @default(USER)
   accounts      Account[]
+  characters    Character[]
+  guilds        Guild[]
+  invites       GuildInvite[]
 }
 
 model Account {
@@ -62,4 +75,42 @@ model PasswordResetToken {
   expires   DateTime
 
   @@unique([email, token])
+}
+
+model Character {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  realm     String
+  faction   Faction
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([name, realm])
+}
+
+model Guild {
+  id         String    @id @default(cuid())
+  name       String
+  realm      String
+  faction    Faction
+  members    User[]
+  invites    GuildInvite[]
+  provider   GuildManagementProvider
+  providerId String?
+
+  @@unique([name, realm])
+  @@unique([provider, providerId])
+}
+
+model GuildInvite {
+  id         String    @id @default(cuid())
+  guildId    String
+  userId     String
+  expires    DateTime
+
+  guild      Guild     @relation(fields: [guildId], references: [id], onDelete: Cascade)
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([guildId, userId])
 }
