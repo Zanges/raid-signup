@@ -26,6 +26,27 @@ enum GuildManagementProvider {
   DISCORD
 }
 
+enum GameVersion {
+  RETAIL
+  CLASSIC
+}
+
+enum CharacterClass {
+  DEATHKNIGHT
+  DEMONHUNTER
+  DRUID
+  HUNTER
+  EVOKER
+  MAGE
+  MONK
+  PALADIN
+  PRIEST
+  ROGUE
+  SHAMAN
+  WARLOCK
+  WARRIOR
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -83,6 +104,9 @@ model Character {
   name      String
   realm     String
   faction   Faction
+  gameVersion GameVersion
+  characterClass CharacterClass
+  spec      String
 
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
