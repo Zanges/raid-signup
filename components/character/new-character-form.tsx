@@ -39,6 +39,9 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { NewCharacterSchema } from "@/schemas";
 import { CharacterClass } from "@/lib/enums";
 import { cn } from "@/lib/utils";
+import { FormError } from "@/components/form-error";
+import { FormSuccess } from "@/components/form-success";
+import { createCharacter } from "@/actions/create-character";
 
 const characterClasses = Object.keys(CharacterClass).map((key) => {
   return {
@@ -59,6 +62,10 @@ const factions = [
 ]
 
 export function NewCharacterForm() {
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
+  const [isPending, startTransition] = useTransition();
+
   const user = useCurrentUser();
 
   const form = useForm<z.infer<typeof NewCharacterSchema>>({
@@ -66,9 +73,16 @@ export function NewCharacterForm() {
   });
 
   const onSubmit = (values: z.infer<typeof NewCharacterSchema>) => {
-    console.log("submitting");
-    console.log(user);
-    console.log(values);
+    setSuccess("");
+    setError("");
+
+    startTransition(() => {
+      createCharacter(user?.id, values)
+        .then((data) => {
+          setSuccess(data.success);
+          setError(data.error);
+        });
+    });
   };
 
   return (
@@ -126,12 +140,14 @@ export function NewCharacterForm() {
                   <FormLabel>Faction</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
-                      <FormControl>
+                      <FormControl
+                        className="w-full"
+                      >
                         <Button
                           variant="outline"
                           role="combobox"
                           className={cn(
-                            "w-[200px] justify-between",
+                            "justify-between",
                             !field.value && "text-muted-foreground"
                           )}
                         >
@@ -144,7 +160,7 @@ export function NewCharacterForm() {
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
-                    <PopoverContent className="w-[200px] p-0">
+                    <PopoverContent className="p-0">
                       <Command>
                         <CommandInput
                           placeholder="Select a class..."
@@ -188,12 +204,14 @@ export function NewCharacterForm() {
                   <FormLabel>Class</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
-                      <FormControl>
+                      <FormControl
+                        className="w-full"
+                      >
                         <Button
                           variant="outline"
                           role="combobox"
                           className={cn(
-                            "w-[200px] justify-between",
+                            "justify-between",
                             !field.value && "text-muted-foreground"
                           )}
                         >
@@ -206,7 +224,7 @@ export function NewCharacterForm() {
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
-                    <PopoverContent className="w-[200px] p-0">
+                    <PopoverContent className="p-0">
                       <Command>
                         <CommandInput
                           placeholder="Select a class..."
@@ -258,6 +276,9 @@ export function NewCharacterForm() {
                 </FormItem>
               )}
             />
+            
+            <FormSuccess successMessage={success} />
+            <FormError errorMessage={error} />
 
             <Button
               type="submit"
