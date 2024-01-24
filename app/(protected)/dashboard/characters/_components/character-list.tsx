@@ -57,6 +57,7 @@ export default function CharacterList() {
 
   useEffect(() => {
     updateCharacterList();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   return (
