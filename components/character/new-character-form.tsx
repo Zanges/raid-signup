@@ -36,7 +36,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { useCurrentUser } from "@/hooks/use-current-user";
-import { NewCharacterSchema } from "@/schemas";
+import { CharacterSchema } from "@/schemas";
 import { CharacterClass } from "@/lib/enums";
 import { cn } from "@/lib/utils";
 import { FormError } from "@/components/form-error";
@@ -68,11 +68,11 @@ export function NewCharacterForm() {
 
   const user = useCurrentUser();
 
-  const form = useForm<z.infer<typeof NewCharacterSchema>>({
-    resolver: zodResolver(NewCharacterSchema),
+  const form = useForm<z.infer<typeof CharacterSchema>>({
+    resolver: zodResolver(CharacterSchema),
   });
 
-  const onSubmit = (values: z.infer<typeof NewCharacterSchema>) => {
+  const onSubmit = (values: z.infer<typeof CharacterSchema>) => {
     setSuccess("");
     setError("");
 

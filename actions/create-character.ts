@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 
-import { NewCharacterSchema } from "@/schemas";
+import { CharacterSchema } from "@/schemas";
 import { db } from "@/lib/db";
 import {
   GameVersion
@@ -11,13 +11,13 @@ import { getCharacterByNameAndRealm } from "@/data/character";
 
 export async function createCharacter(
   userId: string | undefined, 
-  values: z.infer<typeof NewCharacterSchema>
+  values: z.infer<typeof CharacterSchema>
 ) {
   if (!userId) {
     return { error: "User is not authenticated!" } // Should never happen
   }
 
-  const validatedValues = NewCharacterSchema.safeParse(values);
+  const validatedValues = CharacterSchema.safeParse(values);
 
   if (!validatedValues.success) {
     return {

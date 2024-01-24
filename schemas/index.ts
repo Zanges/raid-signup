@@ -23,7 +23,7 @@ export const NewPasswordSchema = z.object({
   }),
 });
 
-export const NewCharacterSchema = z.object({
+export const CharacterSchema = z.object({
   name: z.string().min(1, { message: 'Name is required' }),
   realm: z.string().min(1, { message: 'Realm is required' }),
   faction: z.enum(['ALLIANCE', 'HORDE']),
