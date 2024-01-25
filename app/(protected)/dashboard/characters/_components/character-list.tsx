@@ -9,6 +9,7 @@ import { DataTable } from "@/components/data-table";
 import { Button } from "@/components/ui/button";
 import { getCharacters } from "@/actions/get-characters";
 import { CLASS_COLORS } from "@/lib/static";
+import { cn } from "@/lib/utils";
 
 type Character = {
   name: string;
@@ -60,6 +61,21 @@ const columns: ColumnDef<Character>[] = [
           <RxCaretSort className="ml-2 h-4 w-4" />
         </Button>
       )
+    },
+    cell: ({ row }) => {
+      const faction = row.getValue("faction") as string || "";
+      const correctCaseFaction = faction.charAt(0) + faction.slice(1).toLowerCase();
+      const factionColor = faction === "HORDE" ? "red" : "blue";
+      return (
+        <div
+          className={cn(
+            "flex flex-row items-center",
+            factionColor === "red" ? "text-red-500" : "text-sky-400",
+          )}
+        >
+          {correctCaseFaction}
+        </div>
+      );
     },
   },
   {
