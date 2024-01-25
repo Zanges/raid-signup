@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { ColumnDef } from "@tanstack/react-table"
+import { RxCaretSort } from "react-icons/rx";
 
 import { useCurrentUser } from "@/hooks/use-current-user";
-import { CharacterSchema } from "@/schemas"
 import { DataTable } from "@/components/data-table";
 import { Button } from "@/components/ui/button";
 import { getCharacters } from "@/actions/get-characters";
+import { CLASS_COLORS } from "@/lib/static";
 
 type Character = {
   name: string;
@@ -21,19 +22,73 @@ type Character = {
 const columns: ColumnDef<Character>[] = [
   {
     accessorKey: "name",
-    header: "Name",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Name
+          <RxCaretSort className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
   },
   {
     accessorKey: "realm",
-    header: "Realm",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Realm
+          <RxCaretSort className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
   },
   {
     accessorKey: "faction",
-    header: "Faction",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Faction
+          <RxCaretSort className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
   },
   {
     accessorKey: "characterClass",
-    header: "Class",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Class
+          <RxCaretSort className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+    cell: ({ row }) => {
+      const characterClass = row.getValue("characterClass") as string || "";
+      const correctCaseClass = characterClass.charAt(0) + characterClass.slice(1).toLowerCase();
+      const classColor = CLASS_COLORS[correctCaseClass as keyof typeof CLASS_COLORS];
+      return (
+        <div className="flex flex-row items-center">
+          <div
+            className="w-4 h-4 rounded-full mr-2"
+            style={{ backgroundColor: classColor }}
+          />
+          <div>{correctCaseClass}</div>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "spec",
@@ -48,8 +103,6 @@ export default function CharacterList() {
   function updateCharacterList() {
     if (user) {
       getCharacters(user.id).then((results) => {
-        console.log(results);
-        
         setCharacters(results.data ? results.data as Character[] : []);
       });
     }
@@ -58,7 +111,7 @@ export default function CharacterList() {
   useEffect(() => {
     updateCharacterList();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, []);
 
   return (
     <div className="w-full h-full flex flex-col">
@@ -68,7 +121,7 @@ export default function CharacterList() {
       >
         Refresh Character List
       </Button>
-      <div className="container m-0 mt-2">
+      <div className="container mx-auto w-full h-full m-2">
         <DataTable columns={columns} data={characters} />
       </div>
     </div>
